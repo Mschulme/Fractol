@@ -13,23 +13,36 @@
 #include "libft.h"
 #include "ft_fractal.h"
 
+RGB interpolate_color(float t)
+{
+    RGB color;
+    color.r = (int)(fmax(0, fmin(255, 17 * (1 - t) * t * t * t * 255)));
+    color.g = (int)(fmax(0, fmin(255, 6 * (1 - t) * (1 - t) * t * t * 255)));
+    color.b = (int)(fmax(0, fmin(255, 1.5 * (1 - t) * (1 - t) * (1 - t) * t * 255)));
+    return color;
+}
+
+
+void precompute_colors(RGB *palette, int max_i)
+{
+    for (int i = 0; i < max_i; i++)
+    {
+        float t = (float)i / (max_i - 1);
+        palette[i] = interpolate_color(t);
+    }
+}
+
+
 int	render(t_data *data)
 {
-	t_complex	c;
 	char		*str;
 	char		*str2;
 
-	c.x = -0.4;
-	c.y = 0.6;
 	if (ft_strncmp("Mandelbrot", data->av[1], 15) == 0)
 		helper1(data);
-	else if (ft_strncmp("Burningship", data->av[1], 15) == 0)
-		helper3(data);
-	else if (ft_strncmp("Julia", data->av[1], 10) == 0 && \
-			(data->ac == 2 || data->ac == 4))
-		helper2(data, c);
 	else
 		exitfunction(data);
+
 	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
 	str = ft_itoa(data->maxiterations);
 	str2 = ft_strjoin("Iterations: ", str);
@@ -42,16 +55,11 @@ int	render(t_data *data)
 
 void createimage(t_data *data)
 {
-    ft_initarr(data);
-    if (ft_strncmp("Julia", data->av[1], 5) == 0)
-    {
-        data->maxre = 2;
-        data->maxiterations = 1500;
-    }
     data->img.mlx_img = mlx_new_image(data->mlx, data->width, data->height);
     data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
 
     mlx_loop_hook(data->mlx, &render, data);
+	
     mlx_hook(data->win, 3, 1L<<1, handle_escape, data);
     mlx_hook(data->win, 17, 1L<<17, exitfunction, data);
     mlx_hook(data->win, 4, 1L<<2, handle_mouse, data);
@@ -64,7 +72,7 @@ int	main(int ac, char **av)
 	t_data	*data;
 
 	if (ac == 1)
-		write(1, "Use Mandelbrot, Julia or Burningship\n", 38);
+		printf("Use ./fractol Mandelbrot\n");
 	else
 	{
 		data = malloc(sizeof(t_data));
@@ -74,6 +82,7 @@ int	main(int ac, char **av)
 		if (data->mlx == NULL)
 			return (-1);
 		ft_initialise(data);
+		precompute_colors(data->palette, data->maxiterations);
 		data->ac = ac;
 		data->av = av;
 		data->win = mlx_new_window(data->mlx, data->width, data->height, "Fractal");

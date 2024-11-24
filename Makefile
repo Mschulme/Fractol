@@ -13,7 +13,7 @@
 NAME = fractol
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -Ofast
+CFLAGS = -Wall -Werror -Wextra -Ofast -fopenmp
 
 LIBFT_DIR = ./libft/
 LIBFT = $(LIBFT_DIR)libft.a
@@ -24,8 +24,7 @@ MLX = $(MLX_DIR)libmlx.a
 OBJS = $(SRCS:%.c=%.o)
 
 SRCS = ft_fractol.c ft_handlekeypress.c \
-		mandelbrot.c julia.c burningship.c \
-		ft_utils.c ft_atof.c ft_helper.c
+		mandelbrot.c ft_utils.c ft_atof.c ft_helper.c \
 
 HDRS = -I$(LIBFT_DIR) -I$(MLX_DIR)
 

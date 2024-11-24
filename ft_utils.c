@@ -15,26 +15,14 @@
 void	ft_initialise(t_data *data)
 {
 	data->color = 0xFFFFFF;
-	data->width = 800;
-	data->height = 600;
+	data->width = 1000;
+	data->height = 800;
 	data->minre = -2.1;
 	data->maxre = 0.6;
 	data->minim = -1.2;
 	data->maxim = 1.2;
-	data->maxiterations = 150;
-	data->c_im = 0;
-	data->c_re = 0;
-	data->z_re = 0;
-	data->z_im = 0;
-	data->z_re2 = 0;
-	data->z_im2 = 0;
-	data->x = 0;
-	data->y = 0;
-	data->n = 0;
+	data->maxiterations = 255;
 	data->isinside = true;
-	data->red = 13;
-	data->green = 11;
-	data->blue = 7;
 }
 
 int	exitfunction(t_data *data)
@@ -47,39 +35,23 @@ int	exitfunction(t_data *data)
 	exit (0);
 }
 
-int	rgb_to_int(int r, int g, int b)
+void img_pix_put(t_img *img, int width, int height, int *color_cache)
 {
-	return ((r * 256 * 256) + (g * 256) + b);
-}
+    char *base_addr = img->addr;
+    int line_len = img->line_len;
+    int bpp = img->bpp / 8;
 
-void	img_pix_put(t_img *img, unsigned int x, unsigned int y, int color)
-{
-	char	*pixel;
-	int		i;
-
-	i = img->bpp - 8;
-	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	while (i >= 0)
-	{
-		*pixel++ = (color >> (img->bpp - 8 - i)) & 0xFF;
-		i -= 8;
-	}
-}
-
-void	ft_initarr(t_data *data)
-{
-	int	i;
-	int	red;
-	int	green;
-	int	blue;
-
-	i = 1;
-	while (i <= 256)
-	{
-		red = data->red * (256 - i) % 256;
-		green = data->green * (256 - i) % 256;
-		blue = data->blue * (256 - i) % 256;
-		data->arr[i - 1] = rgb_to_int(red, green, blue);
-		i++;
-	}
+    #pragma omp parallel for collapse(2) schedule(dynamic)
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < width; ++x)
+        {
+            char *pixel = base_addr + (y * line_len + x * bpp);
+            int color = color_cache[y * width + x];
+            for (int i = 0; i < bpp; ++i)
+            {
+                *pixel++ = (color >> (i * 8)) & 0xFF;
+            }
+        }
+    }
 }

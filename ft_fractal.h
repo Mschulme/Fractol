@@ -15,11 +15,13 @@
 
 # include "mlx/mlx.h"
 
+# include <omp.h>
+# include <time.h>
 # include <math.h>
+# include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
-# include <unistd.h>
-# include <stdio.h>
 
 typedef struct s_complex
 {
@@ -35,6 +37,14 @@ typedef struct s_img
 	int		line_len;
 	int		endian;
 }	t_img;
+
+
+typedef struct s_rgb
+{
+    int r;
+    int g;
+    int b;
+} RGB;
 
 typedef struct s_data
 {
@@ -76,26 +86,19 @@ typedef struct s_data
 	double			sign;
 	double			res;
 	double			res2;
+	RGB 			palette[5000];
 }	t_data;
 
-int		rgb_to_int(int r, int g, int b);
-void	img_pix_put(t_img *img, unsigned int x, unsigned int y, int color);
+
+void	img_pix_put(t_img *img, int width, int height, int *color_cache);
 void	ft_initialise(t_data *data);
 int		handle_escape(int Keypress, t_data *data);
 int		handle_mouse(int button, int x, int y, t_data *data);
-void	juliaSet(t_data *data, t_complex c, long double radius, int n);
-int		computationsjulia(t_data *data, int radius, t_complex c);
-void	render_julia(t_data *data, int radius, t_complex c);
 int		compmandel(t_data *data);
 void	render_mandelbrot(t_data *data);
-void	render_burningship(t_data *data);
-void	ft_initarr(t_data *data);
 int		render(t_data *data);
 double	ft_atof(t_data *data, const char *str);
 int		exitfunction(t_data *data);
-
 void	helper1(t_data *data);
-void	helper2(t_data *data, t_complex c);
-void	helper3(t_data *data);
 
 #endif
