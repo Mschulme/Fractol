@@ -14,14 +14,15 @@
 
 void	ft_initialise(t_data *data)
 {
-	data->width = 1000;
-	data->height = 800;
+	data->width = 1800;
+	data->height = 1000;
 	data->minre = -2.1;
 	data->maxre = 0.6;
 	data->minim = -1.2;
 	data->maxim = 1.2;
-	data->maxiterations = 255;
+	data->maxiterations = 4000;
 }
+
 
 int	exitfunction(t_data *data)
 {
@@ -32,6 +33,7 @@ int	exitfunction(t_data *data)
 	free(data);
 	exit (EXIT_SUCCESS);
 }
+
 
 void img_pix_put(t_img *img, int width, int height, int *color_cache)
 {

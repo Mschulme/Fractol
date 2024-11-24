@@ -16,9 +16,9 @@
 RGB interpolate_color(float t)
 {
     RGB color;
-    color.r = (int)(fmax(0, fmin(255, 17 * (1 - t) * t * t * t * 255)));
-    color.g = (int)(fmax(0, fmin(255, 6 * (1 - t) * (1 - t) * t * t * 255)));
-    color.b = (int)(fmax(0, fmin(255, 1.5 * (1 - t) * (1 - t) * (1 - t) * t * 255)));
+    color.r = (int)(fmax(0, fmin(255, 5.5 * (1 - t) * t * t * t * 255)));
+    color.g = (int)(fmax(0, fmin(255, 30 * (1 - t) * (1 - t) * t * t * 255)));
+    color.b = (int)(fmax(0, fmin(255, 2.5 * (1 - t) * (1 - t) * (1 - t) * t * 255)));
     return color;
 }
 
@@ -58,7 +58,6 @@ void createimage(t_data *data)
     data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
 
     mlx_loop_hook(data->mlx, &render, data);
-	
     mlx_hook(data->win, 3, 1L<<1, handle_escape, data);
     mlx_hook(data->win, 17, 1L<<17, exitfunction, data);
     mlx_hook(data->win, 4, 1L<<2, handle_mouse, data);
