@@ -23,8 +23,8 @@ MLX = $(MLX_DIR)libmlx.a
 
 OBJS = $(SRCS:%.c=%.o)
 
-SRCS = ft_fractol.c ft_handlekeypress.c \
-		mandelbrot.c ft_utils.c ft_atof.c ft_helper.c \
+SRCS = main.c ft_handlekeypress.c \
+		mandelbrot.c ft_utils.c ft_helper.c \
 
 HDRS = -I$(LIBFT_DIR) -I$(MLX_DIR)
 

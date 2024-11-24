@@ -14,7 +14,6 @@
 
 void	ft_initialise(t_data *data)
 {
-	data->color = 0xFFFFFF;
 	data->width = 1000;
 	data->height = 800;
 	data->minre = -2.1;
@@ -22,7 +21,6 @@ void	ft_initialise(t_data *data)
 	data->minim = -1.2;
 	data->maxim = 1.2;
 	data->maxiterations = 255;
-	data->isinside = true;
 }
 
 int	exitfunction(t_data *data)

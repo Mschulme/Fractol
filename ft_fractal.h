@@ -75,30 +75,20 @@ typedef struct s_data
 	unsigned int	n;
 	long double		range;
 	long double		rangeim;
-	int				arr[256];
-	int				color;
-	bool			isinside;
 	int				ac;
 	char			**av;
-	int				red;
-	int				blue;
-	int				green;
-	double			sign;
-	double			res;
-	double			res2;
 	RGB 			palette[5000];
 }	t_data;
 
 
-void	img_pix_put(t_img *img, int width, int height, int *color_cache);
-void	ft_initialise(t_data *data);
-int		handle_escape(int Keypress, t_data *data);
-int		handle_mouse(int button, int x, int y, t_data *data);
-int		compmandel(t_data *data);
-void	render_mandelbrot(t_data *data);
-int		render(t_data *data);
-double	ft_atof(t_data *data, const char *str);
-int		exitfunction(t_data *data);
 void	helper1(t_data *data);
+int		render(t_data *data);
+int		compmandel(t_data *data);
+int		exitfunction(t_data *data);
+void	ft_initialise(t_data *data);
+void	render_mandelbrot(t_data *data);
+int		handle_escape(int Keypress, t_data *data);
+void	img_pix_put(t_img *img, int width, int height, int *color_cache);
+int		handle_mouse(int button, int x, int y, t_data *data);
 
 #endif

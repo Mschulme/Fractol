@@ -2,22 +2,20 @@
 
 void render_mandelbrot(t_data *data)
 {
-    int iter = data->maxiterations;
     int iter_x, iter_y;
-
-    long double Zr, Zi, Cr, Ci, Tr, Ti;
+    int iter = data->maxiterations;
 
     int width = data->width;
     int height = data->height;
+    RGB *palette = data->palette;
     long double minre = data->minre;
     long double maxre = data->maxre;
     long double minim = data->minim;
     long double maxim = data->maxim;
-    RGB *palette = data->palette;
+    long double Zr, Zi, Cr, Ci, Tr, Ti;
 
     long double re_factor = (maxre - minre) / width;
     long double im_factor = (maxim - minim) / height;
-
     int *color_cache = (int *)malloc(width * height * sizeof(int));
 
     #pragma omp parallel for private(iter_x, Zr, Zi, Cr, Ci, Tr, Ti) schedule(dynamic)
