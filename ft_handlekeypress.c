@@ -65,6 +65,7 @@ double interpolate(double start, double end, double interpolation)
     return start + ((end - start) * interpolation);
 }
 
+
 int	handle_mouse(int button, int mouse_x, int mouse_y, t_data *data)
 {
 	double mouseRe = (double)mouse_x / (data->width / (data->maxre - data->minre)) + data->minre;

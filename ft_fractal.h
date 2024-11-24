@@ -56,10 +56,9 @@ typedef struct s_data
 	long double		maxre;
 	long double		minim;
 	long double		maxim;
-	int				height;
 	int				width;
+	int				height;
 	unsigned int	maxiterations;
-	unsigned int	n;
 	long double		range;
 	long double		rangeim;
 	int				ac;

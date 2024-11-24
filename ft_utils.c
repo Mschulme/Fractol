@@ -26,11 +26,11 @@ void	ft_initialise(t_data *data)
 int	exitfunction(t_data *data)
 {
 	write(1, "Thank you for using my Fractol program. \n \
-		Use Mandelbrot, Julia or Burningship as input.\n", 92);
+		Use Mandelbrot.\n", 61);
 	mlx_destroy_image(data->mlx, data->img.mlx_img);
 	mlx_destroy_window(data->mlx, data->win);
 	free(data);
-	exit (0);
+	exit (EXIT_SUCCESS);
 }
 
 void img_pix_put(t_img *img, int width, int height, int *color_cache)
