@@ -24,7 +24,7 @@ MLX = $(MLX_DIR)libmlx.a
 OBJS = $(SRCS:%.c=%.o)
 
 SRCS = main.c ft_handlekeypress.c \
-		mandelbrot.c ft_utils.c ft_helper.c \
+		mandelbrot.c ft_utils.c
 
 HDRS = -I$(LIBFT_DIR) -I$(MLX_DIR)
 

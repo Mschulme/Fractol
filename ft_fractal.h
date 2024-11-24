@@ -56,22 +56,9 @@ typedef struct s_data
 	long double		maxre;
 	long double		minim;
 	long double		maxim;
-	int				brightness;
 	int				height;
 	int				width;
-	long double		re_factor;
-	long double		im_factor;
 	unsigned int	maxiterations;
-	long double		c_im;
-	long double		c_re;
-	long double		z_re;
-	long double		z_im;
-	long double		z_re2;
-	long double		z_im2;
-	int				x;
-	int				y;
-	long double		z;
-	long double		temp;
 	unsigned int	n;
 	long double		range;
 	long double		rangeim;
@@ -81,7 +68,6 @@ typedef struct s_data
 }	t_data;
 
 
-void	helper1(t_data *data);
 int		render(t_data *data);
 int		compmandel(t_data *data);
 int		exitfunction(t_data *data);

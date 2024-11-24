@@ -39,7 +39,7 @@ int	render(t_data *data)
 	char		*str2;
 
 	if (ft_strncmp("Mandelbrot", data->av[1], 15) == 0)
-		helper1(data);
+		render_mandelbrot(data);
 	else
 		exitfunction(data);
 
