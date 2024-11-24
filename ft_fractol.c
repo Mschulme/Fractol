@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_fractal.h"
 #include "libft.h"
+#include "ft_fractal.h"
 
 int	render(t_data *data)
 {
@@ -37,26 +37,27 @@ int	render(t_data *data)
 			0x000000, str2);
 	free(str);
 	free(str2);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
-void	createimage(t_data *data)
+void createimage(t_data *data)
 {
-	ft_initarr(data);
-	if (ft_strncmp("Julia", data->av[1], 5) == 0)
-	{
-		data->maxre = 2;
-		data->maxiterations = 1500;
-	}
-	data->img.mlx_img = mlx_new_image(data->mlx, data->width, data->height);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp,
-			&data->img.line_len, &data->img.endian);
-	mlx_loop_hook(data->mlx, &render, data);
-	mlx_hook(data->win, 3, 0, handle_escape, data);
-	mlx_hook(data->win, 17, 0, exitfunction, data);
-	mlx_hook(data->win, 4, 0, handle_mouse, data);
-	mlx_loop(data->mlx);
+    ft_initarr(data);
+    if (ft_strncmp("Julia", data->av[1], 5) == 0)
+    {
+        data->maxre = 2;
+        data->maxiterations = 1500;
+    }
+    data->img.mlx_img = mlx_new_image(data->mlx, data->width, data->height);
+    data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
+
+    mlx_loop_hook(data->mlx, &render, data);
+    mlx_hook(data->win, 3, 1L<<1, handle_escape, data);
+    mlx_hook(data->win, 17, 1L<<17, exitfunction, data);
+    mlx_hook(data->win, 4, 1L<<2, handle_mouse, data);
+    mlx_loop(data->mlx);
 }
+
 
 int	main(int ac, char **av)
 {
@@ -75,8 +76,7 @@ int	main(int ac, char **av)
 		ft_initialise(data);
 		data->ac = ac;
 		data->av = av;
-		data->win = mlx_new_window(data->mlx, data->width \
-					, data->height, "Fractal");
+		data->win = mlx_new_window(data->mlx, data->width, data->height, "Fractal");
 		if (data->win == NULL)
 		{
 			free(data);
@@ -85,10 +85,3 @@ int	main(int ac, char **av)
 		createimage(data);
 	}
 }
-
-/*
-leaks --atExit -- ./fractol Mandelbrot
-
-norminette burningship.c ft_atof.c ft_fractal.h ft_fractol.c libft.h \
-ft_handlekeypress.c ft_utils.c julia.c mandelbrot.c burningship.c 
-*/

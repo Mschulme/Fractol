@@ -12,7 +12,7 @@
 
 NAME = fractol
 
-CC = CC
+CC = gcc
 CFLAGS = -Wall -Werror -Wextra -Ofast
 
 LIBFT_DIR = ./libft/
@@ -29,15 +29,15 @@ SRCS = ft_fractol.c ft_handlekeypress.c \
 
 HDRS = -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-LIBS = -L$(LIBFT_DIR) -L$(MLX_DIR) -lft -lmlx -lm -framework OpenGL -framework AppKit
+LIBS = -L$(LIBFT_DIR) -L$(MLX_DIR) -lft -lmlx -lm -lX11 -lXext
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(HDRS) -c $^ -o $@
+	$(CC) $(CFLAGS) $(HDRS) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -48,11 +48,8 @@ $(MLX):
 clean:
 	rm -f $(OBJS)
 	make clean -C $(LIBFT_DIR)
-	make clean -C $(MLX_DIR)
-	cd libft && rm -f libft.a
 
-fclean:
-	make clean
+fclean: clean
 	rm -f $(NAME)
 
 re: fclean all

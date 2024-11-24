@@ -13,11 +13,13 @@
 #ifndef FT_FRACTAL_H
 # define FT_FRACTAL_H
 
-# include <stdlib.h>
-# include <math.h>
 # include "mlx/mlx.h"
+
+# include <math.h>
+# include <stdlib.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <stdio.h>
 
 typedef struct s_complex
 {

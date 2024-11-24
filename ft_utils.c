@@ -14,9 +14,9 @@
 
 void	ft_initialise(t_data *data)
 {
-	data->color = 0xFFFF00;
-	data->width = 1600;
-	data->height = 1200;
+	data->color = 0xFFFFFF;
+	data->width = 800;
+	data->height = 600;
 	data->minre = -2.1;
 	data->maxre = 0.6;
 	data->minim = -1.2;
