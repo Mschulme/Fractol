@@ -57,7 +57,7 @@ typedef struct s_data
 	long double		rangeim;
 	int				ac;
 	char			**av;
-	RGB 			palette[5000];
+	int 			palette[2000];
 }	t_data;
 
 

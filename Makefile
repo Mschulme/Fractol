@@ -13,7 +13,7 @@
 NAME = fractol
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -Ofast -fopenmp
+CFLAGS = -Wall -Werror -Wextra -O3 -march=native -fopenmp -fopt-info-vec
 
 LIBFT_DIR = ./libft/
 LIBFT = $(LIBFT_DIR)libft.a

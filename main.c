@@ -13,17 +13,18 @@
 #include "libft.h"
 #include "ft_fractal.h"
 
-RGB interpolate_color(float t)
+int interpolate_color(float t)
 {
     RGB color;
     color.r = (int)(fmax(0, fmin(255, 5.5 * (1 - t) * t * t * t * 255)));
     color.g = (int)(fmax(0, fmin(255, 30 * (1 - t) * (1 - t) * t * t * 255)));
     color.b = (int)(fmax(0, fmin(255, 2.5 * (1 - t) * (1 - t) * (1 - t) * t * 255)));
-    return color;
+
+	return (color.r << 16) | (color.g << 8) | color.b;
 }
 
 
-void precompute_colors(RGB *palette, int max_i)
+void precompute_colors(int *palette, int max_i)
 {
     for (int i = 0; i < max_i; i++)
     {

@@ -1,45 +1,78 @@
 #include "ft_fractal.h"
 
+
 void render_mandelbrot(t_data *data)
 {
-    int iter_x, iter_y;
-    int iter = data->maxiterations;
+    const double minre = data->minre;
+    const double maxre = data->maxre;
+    const double minim = data->minim;
+    const double maxim = data->maxim;
 
-    int width = data->width;
-    int height = data->height;
-    RGB *palette = data->palette;
-    long double minre = data->minre;
-    long double maxre = data->maxre;
-    long double minim = data->minim;
-    long double maxim = data->maxim;
-    long double Zr, Zi, Cr, Ci, Tr, Ti;
+    const unsigned int width  = data->width;
+    const unsigned int height = data->height;
+    const unsigned int max_iter = data->maxiterations;
+    int *palette = data->palette;
 
-    long double re_factor = (maxre - minre) / width;
-    long double im_factor = (maxim - minim) / height;
-    int *color_cache = (int *)malloc(width * height * sizeof(int));
+    // Precompute step factors
+    const double re_factor = (double)(maxre - minre) / (double)width;
+    const double im_factor = (double)(maxim - minim) / (double)height;
 
-    #pragma omp parallel for private(iter_x, Zr, Zi, Cr, Ci, Tr, Ti) schedule(dynamic)
-    for (iter_y = 0; iter_y < height; ++iter_y)
+    double *re_values = (double *)malloc(width * sizeof(double));
+    for (unsigned int x = 0; x < width; ++x)
     {
-        for (iter_x = 0; iter_x < width; ++iter_x)
-        {
-            Zr = Zi = Tr = Ti = 0.0;
-            Cr = minre + iter_x * re_factor;
-            Ci = minim + iter_y * im_factor;
+        re_values[x] = minre + x * re_factor;
+    }
 
-            int i;
-            for (i = 0; i < iter && (Tr + Ti <= 4.0); ++i)
+    double *im_values = (double *)malloc(height * sizeof(double));
+    for (unsigned int y = 0; y < height; ++y)
+    {
+        im_values[y] = minim + y * im_factor;
+    }
+
+    // Allocate a buffer to store final color values for all pixels
+    int *color_cache = (int *)malloc(width * height * sizeof(int));
+    if (!color_cache || !re_values || !im_values)
+    {
+        fprintf(stderr, "Memory allocation failed.\n");
+        free(color_cache);
+        free(re_values);
+        free(im_values);
+        return;
+    }
+
+
+//#pragma omp parallel for schedule(dynamic)
+#pragma omp simd
+    for (unsigned int y = 0; y < height; ++y)
+    {
+        double Ci = im_values[y];
+        for (unsigned int x = 0; x < width; ++x)
+        {
+            double Zr = 0.0, Zi = 0.0;
+            double Tr = 0.0, Ti = 0.0;
+            double Cr = re_values[x];
+
+            unsigned int i;
+            for (i = 0; i < max_iter; ++i)
             {
                 Zi = 2.0 * Zr * Zi + Ci;
                 Zr = Tr - Ti + Cr;
                 Tr = Zr * Zr;
                 Ti = Zi * Zi;
+                
+                if (Tr + Ti > 4.0)
+                    break;
             }
-            RGB color = palette[i % iter];
-            int color_value = (color.r << 16) | (color.g << 8) | color.b;
-            color_cache[iter_y * width + iter_x] = color_value;
+
+            int color_value = palette[i % max_iter];
+            color_cache[y * width + x] = color_value;
         }
     }
+
     img_pix_put(&data->img, width, height, color_cache);
+
+    // Cleanup
     free(color_cache);
+    free(re_values);
+    free(im_values);
 }
